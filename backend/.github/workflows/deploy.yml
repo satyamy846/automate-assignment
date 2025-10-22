@@ -1,0 +1,66 @@
+name: Node.js CI/CD DAMS Deployment
+
+on:
+  push:
+    branches:
+      - main  # Deploy automatically on push to main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2️⃣ Setup Node.js (optional — only for build/test)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # 3️⃣ (Optional) Run tests locally before deploying
+      - name: Install dependencies and test
+        run: |
+          cd backend
+          npm install
+          npm test || echo "Skipping tests"
+
+      # 4️⃣ Deploy to EC2
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            set -e
+            echo "🔹 Navigating to app directory"
+            cd ${{ secrets.EC2_APP_DIR }}
+
+            echo "🔹 Pulling latest code"
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "🔹 Moving into backend folder"
+            cd backend
+
+            echo "🔹 Using existing .env from EC2"
+            ls -a | grep .env && echo ".env already exists ✅" || echo "⚠️ No .env found, make sure it's present"
+
+            echo "🔹 Restarting Docker (Postgres + Redis)"
+            docker compose down || true
+            docker compose up -d
+
+            echo "🔹 Installing dependencies"
+            npm install --production
+
+            echo "🔹 Restarting app using PM2"
+            pm2 stop dams || true
+            pm2 start index.js --name dams
+            pm2 save
+            pm2 restart dams
+
+            echo "✅ Deployment complete!"

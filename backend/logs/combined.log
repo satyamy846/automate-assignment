@@ -1162,3 +1162,19 @@
 2025-10-21 19:02:42 [App] [INFO] Session data {"session_data":{"id":1,"email":"admin@example.com","role":"admin","name":"Admin Kumar"}}
 2025-10-21 19:02:42 [Redis] [INFO] Session data retrieved {"session_data":"{\"id\":1,\"email\":\"admin@example.com\",\"role\":\"admin\",\"name\":\"Admin Kumar\"}"}
 2025-10-21 19:02:42 [App] [INFO] Fetched admin analytics summary {"storageCount":4,"mostActiveCount":4}
+2025-10-22 15:47:25 [App] [INFO] Server started successfully {"port":"5000","environment":"development"}
+2025-10-22 15:47:25 [Redis] [INFO] Connected to Redis {"host":"127.0.0.1","port":6379}
+2025-10-22 15:52:25 [App] [INFO] Server started successfully {"port":"5000","environment":"development"}
+2025-10-22 15:52:25 [Redis] [INFO] Connected to Redis {"host":"127.0.0.1","port":6379}
+2025-10-22 15:52:51 [App] [INFO] Server started successfully {"port":"5000","environment":"development"}
+2025-10-22 15:52:51 [Redis] [INFO] Connected to Redis {"host":"127.0.0.1","port":6379}
+2025-10-22 15:53:20 [App] [INFO] Server started successfully {"port":"5000","environment":"development"}
+2025-10-22 15:53:20 [Redis] [INFO] Connected to Redis {"host":"127.0.0.1","port":6379}
+2025-10-22 15:56:07 [App] [INFO] Server started successfully {"port":"5000","environment":"development"}
+2025-10-22 15:56:07 [Redis] [INFO] Connected to Redis {"host":"127.0.0.1","port":6379}
+2025-10-22 15:58:24 [App] [INFO] Server started successfully {"port":"5000","environment":"development"}
+2025-10-22 15:58:24 [Redis] [INFO] Connected to Redis {"host":"127.0.0.1","port":6379}
+2025-10-22 16:00:03 [App] [INFO] Server started successfully {"port":"5000","environment":"development"}
+2025-10-22 16:00:03 [Redis] [INFO] Connected to Redis {}
+2025-10-22 16:00:18 [App] [INFO] Server started successfully {"port":"5000","environment":"development"}
+2025-10-22 16:00:18 [Redis] [INFO] Connected to Redis {}
