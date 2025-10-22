@@ -8,6 +8,13 @@ const upload = multer({ storage });
 
 /**
  * @swagger
+ * tags:
+ *  name: Assets
+ *  description: User Asset Management
+ */
+
+/**
+ * @swagger
  * /assets/upload:
  *   post:
  *     summary: Upload a file

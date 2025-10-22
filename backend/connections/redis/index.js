@@ -2,14 +2,14 @@ const Redis = require("ioredis");
 const { redisLogger } = require('../../utils/logger/index');
 
 const redisClient = new Redis({
-  host: process.env.REDIS_HOST || "127.0.0.1",
-  port: process.env.REDIS_PORT || 6379,
-  password: process.env.REDIS_PASSWORD || undefined,
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+  password: process.env.REDIS_PASSWORD,
   db: 0, // optional
 });
 
 redisClient.on("connect", () => {
-  redisLogger.info("Connected to Redis", { host: process.env.REDIS_HOST || "127.0.0.1", port: process.env.REDIS_PORT || 6379 });
+  redisLogger.info("Connected to Redis", { host: process.env.REDIS_HOST, port: process.env.REDIS_PORT });
 });
 
 redisClient.on("error", (err) => {

@@ -5,6 +5,13 @@ const router = express.Router();
 
 /**
  * @swagger
+ * tags:
+ *  name: Analytics
+ *  description: Admin or User Analytics
+ */
+
+/**
+ * @swagger
  * /analytics/admin:
  *   get:
  *     summary: Get overall admin analytics summary

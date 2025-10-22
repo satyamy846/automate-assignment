@@ -1,12 +1,12 @@
 const { Client } = require("pg");
-const { appLogger } = require("../utils/logger");
+const { databaseLogger } = require("../utils/logger");
 
 const conn = new Client({
-  host: process.env.PG_HOST || "localhost",
-  user: process.env.PG_USER || "postgres",
-  password: process.env.PG_PASSWORD || "root",
-  port: process.env.PG_PORT || 5432,
-  database: "dams",
+  host: process.env.PG_HOST,
+  user: process.env.PG_USER,
+  password: process.env.PG_PASSWORD,
+  port: process.env.PG_PORT,
+  database: process.env.PG_DATABASE,
 });
 
 conn.connect();
@@ -21,6 +21,8 @@ class AnalyticsService {
    */
   static async getAdminAnalyticsData() {
     try {
+      databaseLogger.info("Fetching admin analytics summary...");
+
       const storageUsageQuery = `
         SELECT 
           u.id AS user_id, 
@@ -63,14 +65,16 @@ class AnalyticsService {
         totals: totals.rows[0],
       };
 
-      appLogger.info("Fetched admin analytics summary", {
-        storageCount: storageUsage.rowCount,
-        mostActiveCount: mostActive.rowCount,
+      databaseLogger.info("Admin analytics summary fetched successfully", {
+        storageUsers: storageUsage.rowCount,
+        activeUsers: mostActive.rowCount,
+        totalUploads: totals.rows[0]?.total_uploads || 0,
+        totalDeletions: totals.rows[0]?.total_deletions || 0,
       });
 
       return data;
     } catch (error) {
-      appLogger.error("Error fetching admin analytics", { error: error.message });
+      databaseLogger.error("Admin analytics fetch failed", { error: error.message });
       throw new Error("Failed to fetch admin analytics data");
     }
   }
@@ -84,6 +88,8 @@ class AnalyticsService {
    */
   static async getUserAnalyticsData(userId) {
     try {
+      databaseLogger.info("Fetching user analytics summary...", { userId });
+
       const storageQuery = `
         SELECT COALESCE(SUM(size), 0) AS total_storage_used
         FROM assets
@@ -129,14 +135,16 @@ class AnalyticsService {
         recentActivity: recentActivity.rows,
       };
 
-      appLogger.info("Fetched user analytics summary", {
+      databaseLogger.info("User analytics fetched successfully", {
         userId,
-        recentActivityCount: recentActivity.rowCount,
+        storageUsed: storage.rows[0]?.total_storage_used || 0,
+        assetTypes: typeDistribution.rowCount,
+        recentActivities: recentActivity.rowCount,
       });
 
       return data;
     } catch (error) {
-      appLogger.error("Error fetching user analytics", { userId, error: error.message });
+      databaseLogger.error("User analytics fetch failed", { userId, error: error.message });
       throw new Error("Failed to fetch user analytics data");
     }
   }

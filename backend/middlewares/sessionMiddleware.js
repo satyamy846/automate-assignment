@@ -15,7 +15,7 @@ async function attachSession(req, res, next) {
             appLogger.info("Session data retrieved from Redis", { session_id: sessionId });
             appLogger.info("Session data", { session_data: sessionData });
             if (sessionData) {
-                req.user = sessionData; // ✅ attach user/session payload
+                req.user = sessionData;
             }
         } catch (err) {
             appLogger.error("Redis session retrieval error", { error: err.message, stack: err.stack, session_id: sessionId });
